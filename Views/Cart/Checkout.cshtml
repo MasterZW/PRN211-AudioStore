@@ -1,0 +1,258 @@
+@model IEnumerable<AudioStore.ViewModel.Cart.CartItem>;
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                    <li class="active">Checkout</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<section class="main-container col2-right-layout">
+    <div class="main container">
+        <div class="row">
+            <div class="col-main col-sm-12 col-xs-12">
+                <div class="page-title">
+                    <h2>Checkout</h2>
+                </div>
+                <div class="page-content checkout-page">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success">
+                            Cảm ơn bạn đã đặt hàng. Electro sẽ sớm xác nhận đơn đặt hàng của bạn !
+                        </div>
+                    }
+                    else
+                    {
+                        double total = 0;
+
+                        <h4 class="checkout-sep">1. Products Summary</h4>
+                        <div class="box-border">
+                            <div class="table-responsive">
+                                <table class="table table-bordered cart_summary" id="tbl_cart">
+                                    <thead>
+                                        <tr>
+                                            <th class="cart_product">Image</th>
+                                            <th class="text-center">Product Name</th>
+                                            <th class="text-center">Price</th>
+                                            <th class="text-center">Quantity</th>
+                                            <th class="text-center">Total Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cart_body">
+                                        @foreach (var item in Model)
+                                        {
+                                            var result = item.Quantity * item.Product.Price;
+                                            total += result;
+
+                                            <tr>
+                                                <td>
+                                                    <img style="width: 50px; height: 50px;" src="@item.Product.Thumnail"
+                                                alt="image">
+                                                </td>
+                                                <td class="text-center">
+                                                    <strong>@item.Product.Name</strong>
+                                                </td>
+                                                <td class="text-center">
+                                                    <strong>$ @item.Product.Price</strong>
+                                                </td>
+                                                <td class="text-center">
+                                                    <strong>@item.Quantity</strong>
+                                                </td>
+                                                <td class="text-center">
+                                                    <strong>$ @result</strong>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"><strong>Total Bill</strong></td>
+                                            <td colspan="2">
+                                                <strong>
+                                                    <span id="lbl_total">$ @total</span>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <h4 class="checkout-sep">2. User information</h4>
+                        <div class="box-border">
+                            <label for="">User Email</label>
+                            <input value="@ViewBag.user.Email" class="form-control" readonly />
+                            <br>
+
+                            <label for="">User Phone</label>
+                            <input value="@ViewBag.user.PhoneNumber" class="form-control" readonly />
+                            <br>
+
+                            <label for="">User Address</label>
+                            <input value="@ViewBag.user.Address" class="form-control" readonly />
+                            <br>
+                        </div>
+                        <input value="Confirm" type="submit" form="checkout" class="button pull-right" />
+                        <form id="checkout" action="/cart/checkout" method="post">
+                            <input asp-for-total="@total" type="hidden" />
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*style page*@
+<style>
+    input.button {
+        display: inline-block;
+        border: 0;
+        background: #444;
+        padding: 6px 16px;
+        font-size: 12px;
+        border: 1px solid #444;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap;
+        color: #fff;
+        font-weight: normal;
+        transition: all 0.3s linear;
+        -moz-transition: all 0.3s linear;
+        -webkit-transition: all 0.3s linear;
+        border-radius: 3px;
+    }
+
+    input.button:hover {
+        background: #e83f33;
+        border: 1px solid #e83f33;
+        transition: all 0.3s linear;
+        -moz-transition: all 0.3s linear;
+        -webkit-transition: all 0.3s linear;
+        color: #fff
+    }
+
+    input span {
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    /******************************************
+    33. Checkout page
+    ******************************************/
+    .checkout-page {
+        margin-top: 12px;
+    }
+
+    .checkout-page ul {
+        padding: 0px;
+        margin: auto;
+    }
+
+    .checkout-page li {
+        list-style: none;
+    }
+
+    .checkout-page h4.checkout-sep {
+        text-transform: capitalize;
+        font-size: 15px;
+        border-bottom: 1px #e8e8e8 solid;
+        line-height: normal;
+        padding: 0 0 12px;
+        margin-bottom: 12px;
+        font-weight: 600;
+    }
+
+    .checkout-page h4.checkout-sep.last {
+        border: none;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+    }
+
+    .checkout-page .box-border {
+        margin-bottom: 15px;
+    }
+
+    .checkout-page .box-border h4 {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .checkout-page .box-border h5 {
+        font-weight: 600;
+    }
+
+    .checkout-page .box-border .button {
+        margin-top: 15px;
+    }
+
+    .checkout-page .box-border label {
+        margin-top: 5px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .checkout-page .box-border p,
+    .checkout-page .box-border h4 {
+        padding-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    .checkout-page .box-border .fa {
+        line-height: inherit;
+    }
+
+    .checkout-page .box-border input[type="radio"] {
+        margin-right: 10px;
+    }
+
+    .availability.in-stock span {
+        color: #fff;
+        background-color: #5cb85c;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 3px;
+    }
+
+    .availability.out-of-stock span {
+        color: #fff;
+        background-color: #d9534f;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 600
+    }
+
+    .table-bordered {
+        border: 0px solid #ddd;
+    }
+
+    .table-bordered>tbody>tr>td,
+    .table-bordered>tbody>tr>th,
+    .table-bordered>tfoot>tr>td,
+    .table-bordered>tfoot>tr>th,
+    .table-bordered>thead>tr>td,
+    .table-bordered>thead>tr>th {
+        border: none;
+        border-bottom: 1px solid #e5e5e5;
+    }
+</style>

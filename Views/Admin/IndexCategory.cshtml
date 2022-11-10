@@ -1,0 +1,89 @@
+@model X.PagedList.IPagedList<AudioStore.Models.Entities.Category>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "IndexCategory";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Category</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active">Category</li>
+    </ol>
+    <!--Crud-->
+    <div class="card mb-4">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="/admin/category/create" class="btn btn-primary">
+                                Create Caregory
+                            </a>
+                        </div>
+                        <div class="col-sm-6 search">
+                            @using (Html.BeginForm("IndexCategory", "Admin", FormMethod.Get))
+                            {
+                                <p>
+                                    @Html.TextBox("searchString",ViewBag.CurrentFilter as string)
+                                    <input type="submit" value="Search">
+                                </p>
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover table-light">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>
+                                <i class="fa fa-hand"></i>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @{
+                            var indexID = 1;
+                        }
+                        @foreach (var e in Model)
+                        {
+                            <tr>
+                                <td>@(indexID++)</td>
+                                <td>@e.Name</td>
+                                <td>
+                                    <a asp-action="DetailCategory" asp-controller="Admin" asp-route-id="@e.ID"
+                                    class="btn btn-outline-primary">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+
+                                    <a asp-action="EditCategory" asp-controller="Admin" asp-route-id="@e.ID"
+                                    class="btn btn-success">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+
+                                    <a asp-action="DeleteCategory" asp-controller="Admin" asp-route-id="@e.ID"
+                                    class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (Model.PageCount>1)
+                {
+                    <div class="clearfix">
+                    <div class="hint-text">Showing <b>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)</b>
+                        out of <b> @Model.PageCount</b> entries</div>
+
+                    @Html.PagedListPager(Model, page => Url.Action("IndexCategory",
+                    new { page, currentFilter = ViewBag.CurrentFilter,@class="pagination" }))
+                </div>
+                }
+                
+            </div>
+        </div>

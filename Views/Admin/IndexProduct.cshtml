@@ -1,0 +1,101 @@
+@model  X.PagedList.IPagedList<AudioStore.Models.Entities.Product>
+@using X.PagedList.Mvc.Core;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+@{
+    ViewData["Title"] = "IndexProduct";
+    Layout = "_LayoutAdmin";
+    
+}
+
+<link rel="stylesheet" href="~/css/admin.css">
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active">Product</li>
+        </ol>
+        <!--Crud-->
+        <div class="card mb-4">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href="/admin/product/create" class="btn btn-success">
+                                    Create
+                                </a>
+                            </div>
+                            <div class="col-sm-6">
+                            <div class="col-sm-6">
+                            @using (Html.BeginForm("IndexProduct", "Admin", FormMethod.Get))
+                            {
+                                <p>
+                                    @Html.TextBox("searchString",ViewBag.CurrentFilter as string)
+                                    <input type="submit" value="Search">
+                                    <a asp-action="IndexProduct" asp-controller="Admin" class="btn btn-outline-primary" type="sumbit" >reset </a>
+                                </p>
+                                
+                            }
+                           
+                            </div>
+                            </div>
+                        </div>
+                        <table class="table table-light table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Image</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Stock</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var indexID = 1;}
+                                 @foreach (var e in Model){
+                                <tr>
+
+                                    <td class="text-center">@(indexID++)</td>
+
+                                    <td class="text-center">
+                                        <img style="width:100px;height:100px" src="@(Configuration["BaseAddress"] + e.Thumnail)" alt="Alternate Text" />
+                                        @* <img style="width:100px;height:100px" src="@e.Thumnail" alt=""> *@
+                                    </td>
+
+                                    <td class="text-center">@e.Name</td>
+                                    <td class="text-center">@e.Stock</td>
+                                    <td class="text-center">$ @e.Price</td>
+
+                                    <td class="text-center">
+                                        <a asp-action="DetailProduct" asp-controller="Admin" asp-route-id="@e.ID"  class="btn btn-outline-primary">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <a asp-action="EditProduct" asp-controller="Admin" asp-route-id="@e.ID" class="btn btn-success">
+                                            <i class="fa fa-pen"></i>
+                                        </a>
+
+                                        <a asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@e.ID"  class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+}
+                            </tbody>
+                        </table>
+                     @*  @Html.PagedListPager(Model, page =>Url.Action("IndexProduct",new{page}));*@
+                        @if (Model.PageCount>1)
+                        {
+                            <div class="clearfix">
+                            <div class="hint-text">Showing <b>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)</b> out of <b> @Model.PageCount</b> entries</div>
+                            
+                              @Html.PagedListPager(Model, page => Url.Action("IndexProduct", 
+                                new { page, currentFilter = ViewBag.CurrentFilter,@class="pagination" }))
+                        </div>
+                        }
+                        
+                    </div>
+                </div>

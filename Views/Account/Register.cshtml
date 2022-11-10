@@ -1,0 +1,116 @@
+@model AudioStore.Models.Entities.User;
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .required {
+        color: #f00;
+        padding-left: 3px;
+    }
+    .register-container {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="active">Register</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<div class="container">
+    <div class="register-container row">
+        <div class="col-md-6">
+            <!-- TITLE -->
+            <h1>Register</h1>
+            <!-- /TITLE -->
+
+            <form method="post" onsubmit="">
+                @* <div asp-validation-summary="All" class="text-danger"></div> *@
+                <div class="text-danger">@ViewBag.error</div>
+                <div class="form-group">
+                    <label asp-for="Username"></label> <span class="required">*</span>
+                    <input asp-for="Username" id="username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label> <span class="required">*</span>
+                    <input asp-for="Email" id="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PhoneNumber"></label> <span class="required">*</span>
+                    <input asp-for="PhoneNumber" id="phone" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label> <span class="required">*</span>
+                    <input asp-for="Password" id="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label> <span class="required">*</span>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Address"></label>
+                    <input asp-for="Address" id="address" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-success">Register</button>
+                <a href="/account/login" class="btn-login">Login</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function register() {
+        let q = new QueryData("/account/login");
+        q.send("GET");
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        
+        return false;
+    }
+</script>
+
+<style>
+    .btn-login {
+        text-decoration: underline;
+        color: #337ab7;
+        margin-left: 2rem;
+    }
+    
+    .btn-login:hover {
+        text-decoration: underline;
+        color: #337ab7;
+    }
+</style>

@@ -1,0 +1,96 @@
+@model AudioStore.Models.Entities.User;
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<style>
+    .required {
+        color: #f00;
+        padding-left: 3px;
+    }
+
+    .box-authentication {
+        display: inline-block;
+        width: 50%;
+        float: left;
+        margin-left: 40px;
+    }
+</style>
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="active">Login</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- TITLE -->
+        <h1>Login</h1>
+        <span>Welcome to back! Please login to your account</span>
+
+        <section>
+            <form method="post" action="/account/login">
+                @* <div asp-validation-summary="All" class="text-danger"></div> *@
+
+                <div class="form-group">
+                    <label asp-for="Username"></label> <span class="required">*</span>
+                    <input asp-for="Username" name="username" required class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label> <span class="required">*</span>
+                    <input asp-for="Password" name="pwd" required class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <span class="text-danger">@ViewBag.error</span>
+
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input id="rememberMe" type="checkbox" class="custom-control-input" name="remember" />
+                        <label for="rememberMe" style="cursor: pointer;">Remember Me</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <p>
+                        <a href="/account/login">Forgot Password?</a>
+                    </p>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="box-authentication col-md-6">
+        <h1>Register</h1>
+        <p style="margin-bottom: 25px;">Create your own account</p>
+        <a asp-action="Register" asp-controller="Account" class="btn btn-success">
+            <i class="fa fa-user-o"></i>&nbsp; Register
+        </a>
+        <div class="register-benefits" style="margin-top: 25px;">
+            <h5>Register today to be able :</h5>
+            <ul>
+                <li><i class="fa fa-check-circle text-primary"></i> Faster payment procedure</li>
+                <li><i class="fa fa-check-circle text-primary"></i> Look up your order easily</li>
+            </ul>
+        </div>
+    </div>
+</div>

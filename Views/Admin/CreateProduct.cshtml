@@ -1,0 +1,89 @@
+@model AudioStore.Models.Entities.Product;
+
+@{
+    ViewData["Title"] = "CreateProduct";
+    Layout = "_LayoutAdmin";
+}
+
+@section Scripts{
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#txt_details'), {
+            // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+        })
+        .then(editor => {
+            window.editor = editor;
+        })
+        .catch(err => {
+            console.error(err.stack);
+        });
+</script>
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Create Product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a style="color: #0779e4;" href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active">Create Product</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" href="/admin/product">Back to home</a>
+        </div>
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="CreateProduct" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control " required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group"  >
+                        <label asp-for="CategoryID"  class="control-label"></label>
+                        @Html.DropDownListFor(model => model.CategoryID, (IEnumerable<SelectListItem>) ViewBag.cate, new
+                        {
+                        @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price"  type="text" class="form-control" required/>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Stock" class="control-label"></label>
+                        <input asp-for="Stock" type="number" class="form-control"required />
+                        <span asp-validation-for="Stock" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Detail" class="control-label"></label>
+                        <textarea id="txt_details" asp-for="Detail" rows="5" class="form-control"></textarea>
+                        <span asp-validation-for="Detail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Description</label>
+                        <textarea id="txt_desc" asp-for="Desc" rows="5" class="form-control"></textarea>
+                        <span asp-validation-for="Desc" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Image Url</label>
+                        <input id="txt_thumnail" asp-for="Thumnail" rows="2" class="form-control" required></input>
+                        <span asp-validation-for="Thumnail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

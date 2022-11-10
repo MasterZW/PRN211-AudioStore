@@ -1,0 +1,131 @@
+@model X.PagedList.IPagedList<AudioStore.Models.Entities.Product>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Category";
+    
+}
+<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- ASIDE -->
+					<div id="aside" class="col-md-3">
+						<!-- aside Widget -->
+						<div class="aside">
+							<a asp-action="IndexStore">
+								<h3 class="aside-title" style="font-size: xx-large;" >Categories</h3>
+							</a>
+							<div class="checkbox-filter">
+						@foreach (var item in ViewBag.category)
+						{
+								<div class="input-checkbox">
+									<label for="category-1">
+										<a asp-action="Category" asp-route-id="@item.ID">@item.Name</a>
+									</label>
+
+								</div>
+						}
+							</div>
+						</div>
+						<!-- /aside Widget -->
+
+						
+					</div>
+					<!-- /ASIDE -->
+					<!-- STORE -->
+					<div id="store" class="col-md-9">
+						<!-- store top filter -->
+						<div class="store-filter clearfix">
+							<div class="store-sort">
+								<label>
+									Sort By:
+									<select class="input-select">
+										<option value="0">Popular</option>
+										<option value="1">Position</option>
+									</select>
+								</label>
+
+								<label>
+									Show:
+									<select class="input-select">
+										<option value="0">20</option>
+										<option value="1">50</option>
+									</select>
+								</label>
+							</div>
+							<ul class="store-grid">
+								<li class="active"><i class="fa fa-th"></i></li>
+								<li><a href="#"><i class="fa fa-th-list"></i></a></li>
+							</ul>
+						</div>
+						<!-- /store top filter -->
+
+						<!-- store products -->
+						<div class="row">
+							<!-- product -->
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-md-4 col-xs-6">
+								<div class="product">
+									<div class="product-img">
+										<img src="@item.Thumnail" alt="">
+										<div class="product-label">
+											@if (item.Stock <= 0)
+                                                {
+                                                    <span class="sell">Sold Out</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="new">NEW</span>
+                                                }
+										</div>
+									</div>
+                                        <div class="product-body">
+                                    @foreach (var category in ViewBag.category)
+                                    {
+                                        @if (category.ID == item.CategoryID)
+                                        {
+                                                    <p class="product-category">@category.Name</p>
+                                            break;
+                                        }
+                                    }
+                                            <h3 class="product-name">
+                                                <a asp-controller="Product" asp-action="Index" asp-route-Id="@item.ID">
+                                            @item.Name
+                                                </a>
+                                            </h3>
+                                            <h4 class="product-price">$ @item.Price </h4>
+                                        </div>
+                                        <div class="add-to-cart">
+                                            <button class="add-to-cart-btn" data-id="@item.ID" onclick="addCart(@item.ID)">
+                                                <i class="fa fa-shopping-cart"></i> add to cart
+                                            </button>
+                                        </div>
+								</div>
+							</div>
+                            }
+							
+							<!-- /product -->
+						</div>
+						<!-- /store products -->
+
+						<!-- store bottom filter -->
+						@if (Model.PageCount>1)
+                        {
+                           <div class="store-filter clearfix">
+							<span class="store-qty">Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of out @Model.PageCount page</span>
+							@Html.PagedListPager(Model, page => Url.Action("IndexStore", 
+                             new { page, currentFilter = ViewBag.CurrentFilter,@class="footer-payments" }))
+							</div> 
+                        }
+						<!-- /store bottom filter -->
+					</div>
+					<!-- /STORE -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->

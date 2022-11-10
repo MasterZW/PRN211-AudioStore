@@ -1,0 +1,98 @@
+@model AudioStore.Models.Entities.Product
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+    ViewData["Title"] = "DeleteProduct";
+     Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Delete Product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a style="color: #0779e4;" href="/">Home Admin</a></li>
+        <li class="breadcrumb-item active">Delete Product</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="IndexProduct" asp-controller="Admin">Back to page</a>
+        </div>
+        <form asp-action="DeleteProduct" method="post">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Product Name
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Name)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Category
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.CategoryID)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Price
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Price)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Stock
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Stock)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Description
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(mdel=> mdel.Desc )
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Product Detail
+                                </td>
+                                <td>
+                                    <style>
+                                        #more {
+                                            display: none;
+                                        }
+                                    </style>
+                                    @Html.Raw(Model.Detail)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">
+                                    Img Product
+                                </td>
+
+                                <td>
+                                    <img style="width:150px;height:150px"
+                                        src="@(Configuration["BaseAddress"] + Model.Thumnail)" alt="Alternate Text" />
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                    <div class="form-group">
+                        <input type="submit" value="Delete" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

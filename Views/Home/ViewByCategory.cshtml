@@ -1,0 +1,88 @@
+@model IEnumerable<AudioStore.Models.Entities.Product>
+@{
+    ViewData["Title"] = "ViewByCategory";
+
+    @* <!-- Google font --> *@
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+}
+
+<style>
+    .product {
+        width: 25%;
+        display: inline-block;
+        position: relative;
+        margin: 40px 20px;
+    }
+</style>
+
+<!-- NAVIGATION -->
+<nav id="navigation">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li><a asp-action="Index">Home</a></li>
+                @foreach (var item in ViewBag.category)
+                {
+                    <li>
+                        <a asp-action="ViewByCategory" asp-route-Id="@item.ID">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->
+
+@* <!-- product -->
+@if (Model == null) {
+    <h>This category currently have no products.</h>
+} else { *@
+    @foreach (var item in Model)
+    {
+        <div class="product">
+            <div class="product-img">
+                <img src="@item.Thumnail" alt="">
+                <div class="product-label">
+                    @if (item.Stock <= 0)
+                    {
+                        <span class="sale">Sold out</span>
+                    }
+                    else
+                    {
+                        <span class="new">NEW</span>
+                    }
+                </div>
+            </div>
+            <div class="product-body">
+                @foreach (var category in ViewBag.category)
+                {
+                    @if (category.ID == item.CategoryID)
+                    {
+                        <p class="product-category">@category.Name</p>
+                        break;
+                    }
+                }
+                <h3 class="product-name">
+                    <a asp-controller="Product" asp-action="Index" asp-route-Id="@item.ID">
+                        @item.Name
+                    </a>
+                </h3>
+                <h4 class="product-price">$ @item.Price </h4>
+            </div>
+            <div class="add-to-cart">
+                <button class="add-to-cart-btn" data-id="@item.ID" onclick="addCart(@item.ID)">
+                    <i class="fa fa-shopping-cart"></i> add to cart
+                </button>
+            </div>
+        </div>  
+    }
+@* } *@
+<!-- /product -->

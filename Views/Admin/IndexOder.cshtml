@@ -1,0 +1,71 @@
+@model  X.PagedList.IPagedList<AudioStore.Models.Entities.Order>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "IndexOder";
+    Layout = "_LayoutAdmin";
+}
+
+<link rel="stylesheet" href="~/css/admin.css">
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active">Product</li>
+        </ol>
+        <!--Crud-->
+        <div class="card mb-4">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            
+                        </div>
+                        <table class="table table-light table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">ID Bill</th>
+                                    <th class="text-center">UserName</th>
+                                   
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var indexID = 1;}
+                                 @foreach (var e in Model){
+                                <tr>
+
+                                    <td class="text-center">@(indexID++)</td>
+
+                                    <td class="text-center">
+                                        @e.ID
+                                    </td>
+                                    @foreach (var item in ViewBag.x)
+                                    {
+                                        @if (item.ID == e.UserId)
+                                        {
+                                            <td class="text-center">@item.Username</td>        
+                                        }
+                                    }
+                                    
+                                    
+                                    <td class="text-center">$ @e.TotalPrice</td>
+
+                                    
+                                </tr>
+}
+                            </tbody>
+                        </table>
+                     @*  @Html.PagedListPager(Model, page =>Url.Action("IndexProduct",new{page}));*@
+                        @if (Model.PageCount >1)
+                        {
+                            <div class="clearfix">
+                            <div class="hint-text">Showing <b>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)</b> out of <b> @Model.PageCount</b> entries</div>
+                              @Html.PagedListPager(Model, page => Url.Action("IndexOder", 
+                                new { page, currentFilter = ViewBag.CurrentFilter,@class="pagination" }))
+                        </div>
+                        }
+                        
+                    </div>
+                </div>
