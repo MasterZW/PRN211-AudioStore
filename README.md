@@ -1,3 +1,4 @@
+Electronic Accessories Project
 # PRN211 - AudioStore - MVC
 
 ## Hướng dẫn sử dụng git cho repo chung
